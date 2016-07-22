@@ -21,14 +21,39 @@ export WARP_LOCATIONS=$HOME/.tags
 
 ## BEGIN Additional zsh functionality. #########################################
 
-function _zsh_auto_complete {
-    reply=($(ls $WARP_LOCATIONS))
-}
+# Check if the current shell is zsh
+if [ $SHELL = "/usr/bin/zsh" ]; then
 
-compctl -K _zsh_auto_complete warp
-compctl -K _zsh_auto_complete untag
+    function _zsh_auto_complete {
+        reply=($(ls $WARP_LOCATIONS))
+    }
+
+    # Bind the autocomplete to the following commands.
+    compctl -K _zsh_auto_complete warp
+    compctl -K _zsh_auto_complete untag
+
+fi
 
 ## END Additional zsh functionality. ###########################################
+
+## BEGIN Additional bash functionality. ########################################
+
+if [ $SHELL = "/bin/bash" ]; then
+
+    function _bash_auto_complete {
+        local curw=${COMP_WORDS[COMP_CWORD]}
+        local wordlist=$(find $WARP_LOCATIONS -type l -printf "%f\n")
+        COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+
+        return 0
+    }
+
+    # Bind the autocomplete to the following commands.
+    complete -F _bash_auto_complete warp untag
+
+fi
+
+## END Additional bash functionality. ##########################################
 
 function print_error {
     eval $set_red
