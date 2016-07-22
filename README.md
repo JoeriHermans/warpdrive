@@ -37,3 +37,7 @@ warp [tagname]
 ### tags
 
 Lists all tags.
+
+## Credits
+
+Based on Jeroen Janssens' jumper.
