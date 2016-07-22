@@ -19,6 +19,17 @@ export WARP_LOCATIONS=$HOME/.tags
 
 ## END Definitions. ############################################################
 
+## BEGIN Additional zsh functionality. #########################################
+
+function _zsh_auto_complete {
+    reply=($(ls $WARP_LOCATIONS))
+}
+
+compctl -K _zsh_auto_complete warp
+compctl -K _zsh_auto_complete untag
+
+## END Additional zsh functionality. ###########################################
+
 function print_error {
     eval $set_red
     eval $set_bold
