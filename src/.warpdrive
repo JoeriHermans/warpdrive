@@ -44,7 +44,7 @@ function warp {
     fi
     location=$WARP_LOCATIONS/$1
     # Check if the specified tag exists.
-    if [ ! -f location ]; then
+    if [ ! -L location ]; then
         print_error "Unknown tag."
     else
         cd -P "$WARP_LOCATIONS/$1" 2>/dev/null || echo "warp: tag not found ($1)"
