@@ -1,0 +1,103 @@
+#
+# Tag And Warp utility functions.
+#
+# Author:  Joeri Hermans
+#
+
+## BEGIN Definitions. ##########################################################
+
+# Define terminal colors.
+set_red='tput setaf 1'
+set_green='tput setaf 2'
+set_yellow='tput setaf 3'
+set_blue='tput setaf 4'
+set_bold='tput bold'
+reset_colors='tput sgr0'
+
+# Define tags location.
+export WARP_LOCATIONS=$HOME/.tags
+
+## END Definitions. ############################################################
+
+function print_error {
+    eval $set_red
+    eval $set_bold
+    echo -ne "[ERROR]"
+    eval $reset_colors
+    echo ": $1"
+}
+
+function print_warning {
+    eval $set_yellow
+    eval $set_bold
+    echo -ne "[WARNING]"
+    eval $reset_colors
+    echo ": $1"
+}
+
+function warp {
+    # Check if the correct number of arguments has been supplied.
+    if [ $# -eq 0 ]; then
+        print_error "No warp argument has been supplied."
+        eval $reset_colors
+        return
+    fi
+    location=$WARP_LOCATIONS/$1
+    # Check if the specified tag exists.
+    if [ ! -f location ]; then
+        print_error "Unknown tag."
+    else
+        cd -P "$WARP_LOCATIONS/$1" 2>/dev/null || echo "warp: tag not found ($1)"
+    fi
+    eval $reset_colors
+}
+
+function tag {
+    # Create the tags storage if it doesn't exist yet.
+    mkdir -p $WARP_LOCATIONS
+    # Check if an argument is specified.
+    if [ $# -eq 0 ]; then
+        # Let ln write folder name to warp locations.
+        tag=${PWD##*/}
+        print_warning "No tagname specified, taking $(eval $set_bold)$tag"
+    else
+        tag=$1
+    fi
+    location="$WARP_LOCATIONS/$tag"
+    # Check if a symlink with this tag already exists.
+    if [ -L $location ]; then
+        print_error "Tag $(eval $set_bold)$tag$(eval $reset_colors) already exists."
+        return
+    fi
+    # Save the tag.
+    ln -s "$(pwd)" "$WARP_LOCATIONS/$tag"
+    eval $reset_colors
+}
+
+function untag {
+    # Check if a tagname has been specified.
+    if [ $# -eq 0 ]; then
+        tag=${PWD##*/}
+        print_warning "Setting removal tagname to $(eval $set_bold)$tag"
+    else
+        tag=$1
+    fi
+    location="$WARP_LOCATIONS/$tag"
+    if [ ! -L $location ]; then
+        print_error "Tag does not exist"
+        return
+    fi
+    rm -if $location
+    eval $reset_colors
+}
+
+function retag {
+    # TODO Implement.
+    eval $reset_colors
+}
+
+function tags {
+    echo "$(eval $set_bold)Listing available tags and destinations:$(eval $reset_colors)"
+    ls -l $WARP_LOCATIONS | sed 's/  / /g' | cut -d' ' -f9- && echo
+    eval $reset_colors
+}
