@@ -35,6 +35,13 @@ function print_warning {
     echo ": $1"
 }
 
+function print_info {
+    eval $set_bold
+    echo -ne "[INFO]"
+    eval $reset_colors
+    echo ": $1"
+}
+
 function warp {
     # Check if the correct number of arguments has been supplied.
     if [ $# -eq 0 ]; then
@@ -47,6 +54,8 @@ function warp {
     if [ ! -L $location ]; then
         print_error "Unknown tag."
     else
+        destination=$(readlink $WARP_LOCATIONS/$1)
+        print_info "Warping to $destination."
         cd -P "$WARP_LOCATIONS/$1"
     fi
     eval $reset_colors
@@ -71,6 +80,7 @@ function tag {
     fi
     # Save the tag.
     ln -s "$(pwd)" "$WARP_LOCATIONS/$tag"
+    print_info "Tagged $tag as $(pwd)"
     eval $reset_colors
 }
 
@@ -84,9 +94,22 @@ function untag {
     fi
     location="$WARP_LOCATIONS/$tag"
     if [ ! -L $location ]; then
+        # Check if tag exists with the current absolute path.
+        current_directory=$(pwd)
+        for f in $WARP_LOCATIONS/*
+        do
+            file=$(readlink $f)
+            if [ $file = $current_directory ]; then
+                rm -if $f
+                print_info "Removed tag."
+                eval $reset_colors
+                return
+            fi
+        done
         print_error "Tag does not exist"
         return
     fi
+    print_info "Removed tag."
     rm -if $location
     eval $reset_colors
 }
