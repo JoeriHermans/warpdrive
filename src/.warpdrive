@@ -47,7 +47,7 @@ function warp {
     if [ ! -L $location ]; then
         print_error "Unknown tag."
     else
-        cd "$WARP_LOCATIONS/$1"
+        cd -P "$WARP_LOCATIONS/$1"
     fi
     eval $reset_colors
 }
