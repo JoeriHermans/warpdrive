@@ -31,6 +31,7 @@ if [ $SHELL = "/usr/bin/zsh" ]; then
     # Bind the autocomplete to the following commands.
     compctl -K _zsh_auto_complete warp
     compctl -K _zsh_auto_complete untag
+    compctl -K _zsh_auto_complete retag
 
 fi
 
@@ -49,7 +50,7 @@ if [ $SHELL = "/bin/bash" ]; then
     }
 
     # Bind the autocomplete to the following commands.
-    complete -F _bash_auto_complete warp untag
+    complete -F _bash_auto_complete warp untag retag
 
 fi
 
