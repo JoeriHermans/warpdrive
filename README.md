@@ -48,6 +48,13 @@ retag [tagname] newname
 
 Here, `tagname` is optional, but `newname` must be provided. If you are in a tagged directory, it will automatically retag that directory with the new tagname you specify.
 
+Some examples:
+
+```bash
+retag mydir           # retags current tagged directory to `mydir`
+retag thisdir mydir   # retags `thisdir` to `mydir`
+```
+
 
 ## Credits
 
