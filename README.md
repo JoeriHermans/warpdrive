@@ -38,6 +38,17 @@ warp [tagname]
 
 Lists all tags.
 
+### retag
+
+Rename an existing tag in the taglisting.
+
+```bash
+retag [tagname] newname
+```
+
+Here, `tagname` is optional, but `newname` must be provided. If you are in a tagged directory, it will automatically retag that directory with the new tagname you specify.
+
+
 ## Credits
 
 Based on Jeroen Janssens' jumper.

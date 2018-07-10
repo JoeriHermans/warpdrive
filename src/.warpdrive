@@ -143,7 +143,7 @@ function untag {
                 return
             fi
         done
-        print_error "Tag does not exist"
+        print_error "Tag does not exist."
         return
     fi
     print_info "Removed tag."
@@ -152,7 +152,55 @@ function untag {
 }
 
 function retag {
-    # TODO Implement.
+    # If no arguments specified, don't do anything.
+    if [ $# -eq 0 ]; then
+        print_error "No name specified for retag."
+        eval $reset_colors
+        return
+    fi
+    # If only one argument specified, assume that this is the retag name, and 
+    # take the current directory as the tagname to rename.
+    if [ $# -eq 1 ]; then
+        tag=${PWD##*/}
+        new_tag=$1
+        print_warning "No tagname specified, taking $(eval $set_bold)$tag"
+    else
+        tag=$1
+        new_tag=$2
+    fi
+    location="$WARP_LOCATIONS/$tag"
+    new_location="$WARP_LOCATIONS/$new_tag"
+    # Before we retag anything, let's check that new_tag doesn't already exist.
+    if [ -L $new_location ]; then
+        print_error "New tagname must not already be a tagname."
+        eval $reset_colors
+        return
+    fi
+    if [ ! -L $location ]; then
+        # If a second argument was provided and the first argument doesn't 
+        # match an existing tagname, throw an error.
+        if [ $# -ge 2 ]; then
+            print_error "Tag does not exist: $(eval $set_bold)$tag"
+            eval $reset_colors
+            return
+        fi
+        # Check if tag exists with the current absolute path.
+        current_directory=$(pwd)
+        for f in $WARP_LOCATIONS/*
+        do
+            file=$(readlink $f)
+            if [ $file = $current_directory ]; then
+                mv $f "$WARP_LOCATIONS/$new_tag"
+                print_info "Renamed tag."
+                eval $reset_colors
+                return
+            fi
+        done
+        print_error "Tag does not exist."
+        return
+    fi
+    print_info "Renamed tag."
+    mv $location $new_location
     eval $reset_colors
 }
 
