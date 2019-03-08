@@ -6,7 +6,7 @@ Easily tag locations in deep space (directories) and easily warp (like the space
 
 Installation is quite straightforward. Depending on the shell you are using (bash or zsh), add the following line to .bashrc or .zsh respectively.
 
-`source [path-to-repo]/.warpdrive`
+`source [path-to-repo]/src/.warpdrive`
 
 ## Usage
 
