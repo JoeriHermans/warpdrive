@@ -16,6 +16,7 @@ reset_colors='tput sgr0'
 
 # Define tags location.
 export WARP_LOCATIONS=$HOME/.tags
+mkdir -p "$WARP_LOCATIONS"
 
 ## END Definitions. ############################################################
 
@@ -205,7 +206,11 @@ function retag {
 }
 
 function tags {
-    echo "$(eval $set_bold)Listing available tags and destinations:$(eval $reset_colors)"
-    ls -l $WARP_LOCATIONS | sed 's/  / /g' | cut -d' ' -f9- && echo
-    eval $reset_colors
+    if [ -z "$(ls -A $WARP_LOCATIONS)" ]; then
+        echo "No tags available. Create a tag like so: 'tag [tagname]'"
+    else
+        echo "$(eval $set_bold)Listing available tags and destinations:$(eval $reset_colors)"
+        ls -l $WARP_LOCATIONS | sed 's/  / /g' | cut -d' ' -f9- && echo
+        eval $reset_colors
+    fi
 }
