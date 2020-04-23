@@ -15,7 +15,8 @@ Installation is quite straightforward. Depending on the shell you are using (bas
 Tags the current directory with an optional tagname. If no tagname is specified it will take the name of the current directory.
 
 ```bash
-warp [tagname]
+tag [tagname]
+warp [tagname]  # immediately jump into the tagged directory
 ```
 
 ### untag
