@@ -1,6 +1,6 @@
 # Tag And Warp
 
-Easily tag locations in deep space (directories) and easily warp (like the space drive) to them with a few keystrokes.
+Easily tag locations in deep space (directories) and warp (like the space drive) to them with a few keystrokes.
 
 ## Installation
 
@@ -10,13 +10,30 @@ Installation is quite straightforward. Depending on the shell you are using (bas
 
 ## Usage
 
+Basic usage example:
+
+```bash
+$ cd /var/log/
+$ tag logdir
+[INFO]: Tagged logdir as /var/log
+$ cd ~  # go somewhere else
+$ tags
+Listing available tags and destinations:
+
+log -> /var/log
+
+$ warp log
+[INFO]: Warping to /var/log.
+$ pwd
+/var/log
+```
+
 ### tag
 
 Tags the current directory with an optional tagname. If no tagname is specified it will take the name of the current directory.
 
 ```bash
 tag [tagname]
-warp [tagname]  # immediately jump into the tagged directory
 ```
 
 ### untag
@@ -31,6 +48,8 @@ This tagname is optional. If you are in a tagged directory it will automatically
 
 ### warp
 
+Jump to the tagged directory.
+
 ```bash
 warp [tagname]
 ```
@@ -38,6 +57,10 @@ warp [tagname]
 ### tags
 
 Lists all tags.
+
+```bash
+tags
+```
 
 ### retag
 
@@ -55,7 +78,6 @@ Some examples:
 retag mydir           # retags current tagged directory to `mydir`
 retag thisdir mydir   # retags `thisdir` to `mydir`
 ```
-
 
 ## Credits
 
